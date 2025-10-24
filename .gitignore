@@ -1,0 +1,27 @@
+# Build results
+bin/
+obj/
+
+# VS user files
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# IDE
+.idea/
+*.swp
+
+# Configuration
+appsettings.Development.json
