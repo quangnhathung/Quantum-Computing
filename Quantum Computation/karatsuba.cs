@@ -61,6 +61,27 @@ namespace Quantum_Computation
             return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
         }
 
+        public static int CompareBigIntegers(string a, string b)
+        {
+            a = a.TrimStart('0');
+            b = b.TrimStart('0');
+
+            if (a.Length > b.Length)
+                return 1;
+            if (a.Length < b.Length)
+                return -1;
+
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] > b[i])
+                    return 1;
+                if (a[i] < b[i])
+                    return -1;
+            }
+
+            return 0;
+        }
+
         // Nhân một chữ số với số lớn
         private static string MultiplySingleDigit(string num, int digit)
         {
@@ -80,7 +101,6 @@ namespace Quantum_Computation
             return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
         }
 
-        // Thuật toán Karatsuba (chia để trị)
         public static string Karatsuba(string x, string y)
         {
             //xoa so 0 dau
@@ -90,7 +110,7 @@ namespace Quantum_Computation
             if (x == "" || y == "")
                 return "0";
 
-            // Nếu nhỏ, nhân trực tiếp
+            // Neu nho, nhan truc tiep
             if (x.Length <= 3 && y.Length <= 3)
             {
                 return ((int.Parse(x) * int.Parse(y)).ToString());
@@ -108,7 +128,6 @@ namespace Quantum_Computation
             string c = y.Substring(0, n - m);
             string d = y.Substring(n - m);
 
-            // Tính theo công thức Karatsuba
             string ac = Karatsuba(a, c);
             string bd = Karatsuba(b, d);
             string aPlusb = AddStrings(a, b);
@@ -117,7 +136,7 @@ namespace Quantum_Computation
 
             string adbc = SubStrings(SubStrings(abcd, ac), bd);
 
-            // Kết quả = ac * 10^(2m) + adbc * 10^m + bd
+            // rs = ac * 10^(2m) + adbc * 10^m + bd
             string part1 = ac + new string('0', 2 * m);
             string part2 = adbc + new string('0', m);
             string result = AddStrings(AddStrings(part1, part2), bd);

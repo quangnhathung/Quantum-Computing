@@ -24,7 +24,7 @@ namespace Quantum_Computation
         private void button1_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -35,7 +35,7 @@ namespace Quantum_Computation
         private void button2_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -46,7 +46,7 @@ namespace Quantum_Computation
         private void button3_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                  ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -57,7 +57,7 @@ namespace Quantum_Computation
         private void button8_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -68,7 +68,7 @@ namespace Quantum_Computation
         private void button7_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -79,7 +79,7 @@ namespace Quantum_Computation
         private void button6_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -90,7 +90,7 @@ namespace Quantum_Computation
         private void button12_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -101,7 +101,7 @@ namespace Quantum_Computation
         private void button11_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -112,7 +112,7 @@ namespace Quantum_Computation
         private void button10_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                ScreenResult.Text == "*" ||
+                ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                 ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -123,7 +123,7 @@ namespace Quantum_Computation
         private void button15_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text == "+" ||
-                 ScreenResult.Text == "*" ||
+                 ScreenResult.Text == "*" || ScreenResult.Text == "-" ||
                  ScreenResult.Text == "")
             {
                 ScreenResult.Text = "";
@@ -156,12 +156,15 @@ namespace Quantum_Computation
         private void button17_Click(object sender, EventArgs e)
         {
             ScreenResult.Text = "";
+            num1 = "";
+            num2 = "";
+            op = "";
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (ScreenResult.Text != "+" &&
-                ScreenResult.Text != "*" &&
+                ScreenResult.Text != "*" && ScreenResult.Text != "-" &&
                 ScreenResult.Text != "")
             {
                 num1 = ScreenResult.Text;
@@ -175,7 +178,7 @@ namespace Quantum_Computation
         {
             op = "";
             if (ScreenResult.Text != "+" &&
-                ScreenResult.Text != "*" &&
+                ScreenResult.Text != "*" && ScreenResult.Text != "-" &&
                 ScreenResult.Text != "")
             {
                 num1 = ScreenResult.Text;
@@ -188,7 +191,7 @@ namespace Quantum_Computation
         private async void button18_Click(object sender, EventArgs e)
         {
             //bắt đầu do thời gian thực thi
-            Stopwatch sw = Stopwatch.StartNew(); 
+            Stopwatch sw = Stopwatch.StartNew();
             num2 = ScreenResult.Text;
             if (num1 == "" || num2 == "" || op == "")
             {
@@ -207,7 +210,21 @@ namespace Quantum_Computation
                     break;
                 case "+":
                     ScreenResult.Clear();
-                    temp = karatsuba.Karatsuba(num1, num2);
+                    temp = karatsuba.AddStrings(num1, num2);
+                    ScreenResult.Text = temp;
+                    break;
+                case "-":
+                    ScreenResult.Clear();
+                    if (karatsuba.CompareBigIntegers(num1, num2) == -1)
+                    {
+                        ScreenResult.Text = "ST phải bé hơn SBT";
+                        await Task.Delay(3500);
+                        ScreenResult.Text = "";
+                        button17_Click(sender, e);
+                        return;
+                    }
+
+                    temp = karatsuba.SubStrings(num1, num2);
                     ScreenResult.Text = temp;
                     break;
             }
@@ -215,6 +232,19 @@ namespace Quantum_Computation
             sw.Stop();
             label2.Text = $"Thời gian thực hiện: {sw.ElapsedTicks * (1_000_000.0 / Stopwatch.Frequency)} µs"; //microsecond_1/1000000 giây
             return;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (ScreenResult.Text != "+" &&
+                ScreenResult.Text != "*" && ScreenResult.Text != "-" &&
+                ScreenResult.Text != "")
+            {
+                num1 = ScreenResult.Text;
+                ScreenResult.Clear();
+                ScreenResult.Text = "-";
+                op = "-";
+            }
         }
     }
 }
