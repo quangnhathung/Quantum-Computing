@@ -246,5 +246,20 @@ namespace Quantum_Computation
                 op = "-";
             }
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

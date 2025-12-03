@@ -123,6 +123,7 @@ namespace Quantum_Computation
 
             int m = n / 2;
 
+            //chia làm 2 nửa
             string a = x.Substring(0, n - m);
             string b = x.Substring(n - m);
             string c = y.Substring(0, n - m);
@@ -136,7 +137,7 @@ namespace Quantum_Computation
 
             string adbc = SubStrings(SubStrings(abcd, ac), bd);
 
-            // rs = ac * 10^(2m) + adbc * 10^m + bd
+            // rs = (ac * 10^(2m)) + ((a+b)(c+d) - ac – bd )* 10^m + bd
             string part1 = ac + new string('0', 2 * m);
             string part2 = adbc + new string('0', m);
             string result = AddStrings(AddStrings(part1, part2), bd);
