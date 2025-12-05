@@ -191,7 +191,7 @@ namespace Quantum_Computation
         private async void button18_Click(object sender, EventArgs e)
         {
             //bắt đầu do thời gian thực thi
-            Stopwatch sw = Stopwatch.StartNew();
+            Stopwatch sw = new Stopwatch();
             num2 = ScreenResult.Text;
             if (num1 == "" || num2 == "" || op == "")
             {
@@ -205,12 +205,16 @@ namespace Quantum_Computation
             {
                 case "*":
                     ScreenResult.Clear();
+                    sw.Start();
                     temp = karatsuba.Karatsuba(num1, num2);
+                    sw.Stop();
                     ScreenResult.Text = temp;
                     break;
                 case "+":
                     ScreenResult.Clear();
+                    sw.Start();
                     temp = karatsuba.AddStrings(num1, num2);
+                    sw.Stop();
                     ScreenResult.Text = temp;
                     break;
                 case "-":
@@ -223,13 +227,13 @@ namespace Quantum_Computation
                         button17_Click(sender, e);
                         return;
                     }
-
+                    sw.Start();
                     temp = karatsuba.SubStrings(num1, num2);
+                    sw.Stop();
                     ScreenResult.Text = temp;
                     break;
             }
             op = "";
-            sw.Stop();
             label2.Text = $"Thời gian thực hiện: {sw.ElapsedTicks * (1_000_000.0 / Stopwatch.Frequency)} µs"; //microsecond_1/1000000 giây
             return;
         }
