@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -52,7 +53,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.button21 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +74,18 @@
             this.panel1.Size = new System.Drawing.Size(473, 148);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(18, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(147, 23);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Máy tính lượng tử";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button20
             // 
@@ -154,6 +168,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.panel2.Controls.Add(this.button22);
+            this.panel2.Controls.Add(this.button21);
             this.panel2.Controls.Add(this.button18);
             this.panel2.Controls.Add(this.button17);
             this.panel2.Controls.Add(this.button13);
@@ -451,17 +467,37 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label1
+            // button21
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(18, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(147, 23);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Máy tính lượng tử";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.button21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(194)))), ((int)(((byte)(255)))));
+            this.button21.FlatAppearance.BorderSize = 0;
+            this.button21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button21.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button21.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.button21.Location = new System.Drawing.Point(129, 1);
+            this.button21.Margin = new System.Windows.Forms.Padding(1);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(105, 85);
+            this.button21.TabIndex = 20;
+            this.button21.Text = "Nhân thường";
+            this.button21.UseVisualStyleBackColor = false;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // button22
+            // 
+            this.button22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(194)))), ((int)(((byte)(255)))));
+            this.button22.FlatAppearance.BorderSize = 0;
+            this.button22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button22.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            this.button22.Location = new System.Drawing.Point(236, 1);
+            this.button22.Margin = new System.Windows.Forms.Padding(1);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(105, 85);
+            this.button22.TabIndex = 21;
+            this.button22.Text = "random";
+            this.button22.UseVisualStyleBackColor = false;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
             // 
             // Form1
             // 
@@ -511,5 +547,7 @@
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.Button button21;
     }
 }

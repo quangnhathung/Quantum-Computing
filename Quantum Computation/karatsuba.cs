@@ -10,42 +10,60 @@ namespace Quantum_Computation
     {
         public static string AddStrings(string num1, string num2)
         {
-            // format chieu dai 2 so
-            int maxLen = Math.Max(num1.Length, num2.Length);
-            num1 = num1.PadLeft(maxLen, '0');
-            num2 = num2.PadLeft(maxLen, '0');
+            if (string.IsNullOrEmpty(num1)) return num2 ?? "0";
+            if (string.IsNullOrEmpty(num2)) return num1 ?? "0";
 
+            int i = num1.Length - 1;
+            int j = num2.Length - 1;
             int carry = 0;
-            string result = "";
 
+            int maxLen = Math.Max(num1.Length, num2.Length);
+            StringBuilder sb = new StringBuilder(maxLen + 1);
 
-            for (int i = maxLen - 1; i >= 0; i--)
+            while (i >= 0 || j >= 0 || carry > 0)
             {
-                int sum = (num1[i] - '0') + (num2[i] - '0') + carry;
-                result = (sum % 10).ToString() + result;
+                int d1 = (i >= 0) ? num1[i] - '0' : 0;
+                int d2 = (j >= 0) ? num2[j] - '0' : 0;
+
+                int sum = d1 + d2 + carry;
+
+                sb.Append(sum % 10);
+
                 carry = sum / 10;
+
+                i--;
+                j--;
             }
 
-            if (carry > 0)
-                result = carry.ToString() + result;
+            char[] resultChars = new char[sb.Length];
+            for (int k = 0; k < sb.Length; k++)
+            {
+                resultChars[k] = sb[sb.Length - 1 - k];
+            }
 
-            // xoa so 0 thua
-            return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
+            return new string(resultChars);
         }
 
         // Hàm trừ hai số lớn (num1 >= num2)
         public static string SubStrings(string num1, string num2)
         {
-            int maxLen = Math.Max(num1.Length, num2.Length);
-            num1 = num1.PadLeft(maxLen, '0');
-            num2 = num2.PadLeft(maxLen, '0');
+            num1 = num1.TrimStart('0');
+            num2 = num2.TrimStart('0');
+            if (num2 == "") return num1 == "" ? "0" : num1;
 
+            int i = num1.Length - 1;
+            int j = num2.Length - 1;
             int borrow = 0;
-            string result = "";
 
-            for (int i = maxLen - 1; i >= 0; i--)
+            StringBuilder sb = new StringBuilder(num1.Length);
+
+            while (i >= 0)
             {
-                int diff = (num1[i] - '0') - (num2[i] - '0') - borrow;
+                int d1 = num1[i--] - '0';
+                int d2 = (j >= 0) ? num2[j--] - '0' : 0;
+
+                int diff = d1 - d2 - borrow;
+
                 if (diff < 0)
                 {
                     diff += 10;
@@ -55,10 +73,21 @@ namespace Quantum_Computation
                 {
                     borrow = 0;
                 }
-                result = diff.ToString() + result;
+                sb.Append(diff);
             }
 
-            return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
+            while (sb.Length > 1 && sb[sb.Length - 1] == '0')
+            {
+                sb.Length--;
+            }
+
+            char[] resultChars = new char[sb.Length];
+            for (int k = 0; k < sb.Length; k++)
+            {
+                resultChars[k] = sb[sb.Length - 1 - k];
+            }
+
+            return new string(resultChars);
         }
 
         public static int CompareBigIntegers(string a, string b)
@@ -111,9 +140,9 @@ namespace Quantum_Computation
                 return "0";
 
             // Neu nho, nhan truc tiep
-            if (x.Length <= 3 && y.Length <= 3)
+            if (x.Length < 800 || y.Length < 800)
             {
-                return ((int.Parse(x) * int.Parse(y)).ToString());
+                return MultiplyBigInt(x, y);
             }
 
             int n = Math.Max(x.Length, y.Length);
@@ -144,5 +173,67 @@ namespace Quantum_Computation
 
             return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
         }
+
+        public static string MultiplyBigInt(string num1, string num2)
+        {
+            if (num1 == "0" || num2 == "0") return "0";
+
+            int m = num1.Length;
+            int n = num2.Length;
+
+
+            int[] pos = new int[m + n];
+
+            for (int i = m - 1; i >= 0; i--)
+            {
+                for (int j = n - 1; j >= 0; j--)
+                {
+                    int digit1 = num1[i] - '0';
+                    int digit2 = num2[j] - '0';
+
+                    int mul = digit1 * digit2;
+
+                    int p1 = i + j;
+                    int p2 = i + j + 1;
+
+                    int sum = mul + pos[p2];
+
+                    pos[p1] += sum / 10;
+                    pos[p2] = sum % 10; 
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (int num in pos)
+            {
+                if (!(sb.Length == 0 && num == 0))
+                {
+                    sb.Append(num);
+                }
+            }
+            return sb.Length == 0 ? "0" : sb.ToString();
+        }
+
+        private static readonly Random _random = new Random();
+
+
+        public static string RandomBigInt(int n)
+        {
+            if (n <= 0) return "0";
+            if (n == 1) return _random.Next(0, 10).ToString();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(_random.Next(1, 10));
+
+            for (int i = 1; i < n; i++)
+            {
+                sb.Append(_random.Next(0, 10));
+            }
+
+            return sb.ToString();
+        }
+
     }
 }
