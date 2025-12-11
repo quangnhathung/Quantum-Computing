@@ -199,7 +199,7 @@ namespace Quantum_Computation
                     int sum = mul + pos[p2];
 
                     pos[p1] += sum / 10;
-                    pos[p2] = sum % 10; 
+                    pos[p2] = sum % 10;
                 }
             }
 
@@ -233,6 +233,126 @@ namespace Quantum_Computation
             }
 
             return sb.ToString();
+        }
+
+        private static string DivideBy2(string num)
+        {
+            StringBuilder sb = new StringBuilder();
+            int carry = 0;
+
+            foreach (char c in num)
+            {
+                int cur = carry * 10 + (c - '0');
+                sb.Append(cur / 2);
+                carry = cur % 2;
+            }
+            return sb.ToString().TrimStart('0').Length == 0 ? "0" : sb.ToString().TrimStart('0');
+        }
+
+        private static string DivideBy6(string num)
+        {
+            StringBuilder sb = new StringBuilder();
+            int carry = 0;
+
+            foreach (char c in num)
+            {
+                int cur = carry * 10 + (c - '0');
+                sb.Append(cur / 6);
+                carry = cur % 6;
+            }
+            return sb.ToString().TrimStart('0').Length == 0 ? "0" : sb.ToString().TrimStart('0');
+        }
+
+        public static string ToomCook3(string x, string y)
+        {
+            x = x.TrimStart('0');
+            y = y.TrimStart('0');
+
+            if (x == "" || y == "") return "0";
+
+            // Nếu nhỏ thì dùng nhân chuẩn cho nhanh
+            if (x.Length < 600 || y.Length < 600)
+                return MultiplyBigInt(x, y);
+
+            // Pad chiều dài
+            int n = Math.Max(x.Length, y.Length);
+            int m = (n + 2) / 3;
+            x = x.PadLeft(3 * m, '0');
+            y = y.PadLeft(3 * m, '0');
+
+            // Tách 3 đoạn
+            string x2 = x.Substring(0, m);
+            string x1 = x.Substring(m, m);
+            string x0 = x.Substring(2 * m, m);
+
+            string y2 = y.Substring(0, m);
+            string y1 = y.Substring(m, m);
+            string y0 = y.Substring(2 * m, m);
+
+            // Tính 5 điểm
+            // 1. v0 = x(0)*y(0)
+            string v0 = Karatsuba(x0, y0);
+
+            // 2. v1 = x(1)*y(1)
+            string X1 = AddStrings(AddStrings(x0, x1), x2);
+            string Y1 = AddStrings(AddStrings(y0, y1), y2);
+            string v1 = Karatsuba(X1, Y1);
+
+            // 3. v_1 = x(-1)*y(-1)
+            string X_1 = AddStrings(SubStrings(x0, x1), x2);
+            string Y_1 = AddStrings(SubStrings(y0, y1), y2);
+            string vneg1 = Karatsuba(X_1, Y_1);
+
+            // 4. v2 = x(2)*y(2)
+            string X2 = AddStrings(AddStrings(x0, MultiplySingleDigit(x1, 2)), MultiplySingleDigit(x2, 4));
+            string Y2 = AddStrings(AddStrings(y0, MultiplySingleDigit(y1, 2)), MultiplySingleDigit(y2, 4));
+            string v2 = Karatsuba(X2, Y2);
+
+            // 5. v_inf = x2*y2
+            string vInf = Karatsuba(x2, y2);
+
+            // ──────────────────────────────
+            // INTERPOLATION
+            // ──────────────────────────────
+
+            string t1 = SubStrings(v1, vneg1);                  // (v1 - v_-1)
+            string t2 = SubStrings(v2, vneg1);                  // (v2 - v_-1)
+
+            string m1 = SubStrings(t1, MultiplySingleDigit(v0, 2));
+            m1 = DivideBy2(m1);
+
+            string m2 = SubStrings(t2, MultiplySingleDigit(v1, 2));
+            m2 = DivideBy6(m2);
+
+            string m3 = SubStrings(vneg1, v0);
+
+            string r0 = v0;
+            string r4 = vInf;
+            string r3 = SubStrings(SubStrings(m2, m1), m3);
+            string r1 = SubStrings(m1, r3);
+            string r2 = SubStrings(SubStrings(m3, r1), r4);
+
+            // ──────────────────────────────
+            // GHÉP KẾT QUẢ: shift theo B = 10^m
+            // ──────────────────────────────
+            string B = new string('0', m);
+
+            string result =
+                AddStrings(
+                    AddStrings(
+                        AddStrings(
+                            AddStrings(
+                                r0,
+                                r1 + B
+                            ),
+                            r2 + B + B
+                        ),
+                        r3 + B + B + B
+                    ),
+                    r4 + B + B + B + B
+                );
+
+            return result.TrimStart('0').Length == 0 ? "0" : result.TrimStart('0');
         }
 
     }

@@ -324,5 +324,54 @@ namespace Quantum_Computation
         {
             ScreenResult.Text = karatsuba.RandomBigInt(5000);
         }
+
+        private async void button13_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new Stopwatch();
+            num2 = ScreenResult.Text;
+            if (num1 == "" || num2 == "" || op == "")
+            {
+                ScreenResult.Text = "Phép tính lỗi";
+                await Task.Delay(1500);
+                ScreenResult.Text = "";
+                return;
+            }
+            string temp = "";
+            switch (op)
+            {
+                case "*":
+                    ScreenResult.Clear();
+                    sw.Start();
+                    temp = karatsuba.ToomCook3(num1, num2);
+                    sw.Stop();
+                    ScreenResult.Text = temp;
+                    break;
+                case "+":
+                    ScreenResult.Clear();
+                    sw.Start();
+                    temp = karatsuba.AddStrings(num1, num2);
+                    sw.Stop();
+                    ScreenResult.Text = temp;
+                    break;
+                case "-":
+                    ScreenResult.Clear();
+                    if (karatsuba.CompareBigIntegers(num1, num2) == -1)
+                    {
+                        ScreenResult.Text = "ST phải bé hơn SBT";
+                        await Task.Delay(3500);
+                        ScreenResult.Text = "";
+                        button17_Click(sender, e);
+                        return;
+                    }
+                    sw.Start();
+                    temp = karatsuba.SubStrings(num1, num2);
+                    sw.Stop();
+                    ScreenResult.Text = temp;
+                    break;
+            }
+            op = "";
+            label2.Text = $"Thời gian thực hiện: {sw.ElapsedTicks * (1_000_000.0 / Stopwatch.Frequency)} µs"; //microsecond_1/1000000 giây
+            return;
+        }
     }
 }
